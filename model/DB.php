@@ -1,5 +1,7 @@
 <?php
 
+namespace CPNV;
+
 require_once('.env.php');
 
 class DB
@@ -7,7 +9,7 @@ class DB
 
     static private function getDbConnection()
     {
-        return new PDO(DSN, USERNAME, PASSWORD);
+        return new \PDO(DSN, USERNAME, PASSWORD);
     }
 
     static public function selectMany($query, $args)
@@ -16,7 +18,7 @@ class DB
         $statement = $db_connection->prepare($query);
 
         if ($statement->execute($args)) {
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $statement->fetchAll(\PDO::FETCH_ASSOC);
         }
 
         // close db connection
@@ -32,7 +34,7 @@ class DB
         $statement = $db_connection->prepare($query);
 
         if ($statement->execute($args)) {
-            return $statement->fetch(PDO::FETCH_ASSOC);
+            return $statement->fetch(\PDO::FETCH_ASSOC);
         }
 
         // close db connection
