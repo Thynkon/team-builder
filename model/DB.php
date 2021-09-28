@@ -49,16 +49,12 @@ class DB
         $db_connection = self::getDbConnection();
         $statement = $db_connection->prepare($query);
 
-        if ($statement->execute($args)) {
+        try {
+            $statement->execute($args);
             return $db_connection->lastInsertId();
+        } catch (\PDOException $exception) {
+            return false;
         }
-
-        // close db connection
-        $statement = null;
-        $db_connection = null;
-
-        return false;
-
     }
 
     static public function execute($query, $args)
@@ -66,14 +62,11 @@ class DB
         $db_connection = self::getDbConnection();
         $statement = $db_connection->prepare($query);
 
-        if ($statement->execute($args)) {
+        try {
+            $statement->execute($args);
             return $statement->rowCount();
+        } catch (\PDOException $exception) {
+            return false;
         }
-
-        // close db connection
-        $statement = null;
-        $db_connection = null;
-
-        return false;
     }
 }

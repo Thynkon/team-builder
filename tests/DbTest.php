@@ -14,6 +14,9 @@ class DbTest extends TestCase
     {
     }
 
+    /**
+     * @covers DB::selectMany()
+    */
     public function testSelectMany()
     {
         $this->assertEquals(
@@ -33,6 +36,9 @@ class DbTest extends TestCase
         );
     }
 
+    /**
+     * @covers DB::selectOne()
+     */
     public function testSelectOne()
     {
         $this->assertEquals(
@@ -45,6 +51,9 @@ class DbTest extends TestCase
         );
     }
 
+    /**
+     * @covers DB::insert()
+     */
     public function testInsert()
     {
         $this->assertEquals(
@@ -53,6 +62,9 @@ class DbTest extends TestCase
         );
     }
 
+    /**
+     * @covers DB::execute()
+     */
     public function testUpdate()
     {
         $this->assertEquals(
