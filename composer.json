@@ -1,6 +1,8 @@
 {
     "require": {
         "phpunit/phpunit": "^9.5",
-        "byjg/migration": "^4.2"
+        "byjg/migration": "^4.2",
+        "ext-pdo": "*",
+        "thynkon/simple-orm": "dev-master"
     }
 }
