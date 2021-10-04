@@ -49,6 +49,7 @@ class RoleTest extends TestCase
         $this->migration->reset();
         $this->migration->up(1);
     }
+
     /**
      * @covers Role::all()
      */
