@@ -1,6 +1,6 @@
 <?php
 
-require "model/Member.php";
+require_once("model/Member.php");
 
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
