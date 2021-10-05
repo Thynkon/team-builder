@@ -1,6 +1,7 @@
 <?php
 
-require_once("model/Role.php");
+require_once("app/models/Role.php");
+require_once(".env.php");
 
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;
