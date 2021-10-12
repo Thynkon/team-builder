@@ -82,6 +82,8 @@ class TeamController
             exit;
         }
 
+        $url = "index.php?controller=MemberController&method=userTeamList";
+
         $view = new View();
         $data = [];
         // set title
@@ -92,62 +94,23 @@ class TeamController
         // default value => Attente de validation
         $team->state_id = 2;
 
-        $existing_team = Team::where("name", $_REQUEST["team_name"]);
-
-        if (count($existing_team) !== 0) {
-            $_SESSION["flash_message"] = "There is already a team named {$_REQUEST["team_name"]}!!!";
-
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/style.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // get body content
-            ob_start();
-            require_once("resources/views/error/error.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $view->render("templates/base.php", $data);
-            return;
-        }
-
-        // show error message
         if (!$team->create()) {
-            $data["body"]["error_message"] = "Failed to create a new team!!!";
+            $_SESSION["flash_message"] = "Failed to create a new team!!!";
+            $_SESSION["flash_message"] .= " There is already a team named {$_REQUEST["team_name"]}!!!";
 
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/error.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // get body content
-            ob_start();
-            require_once("resources/views/error/error.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $view->render("templates/base.php", $data);
+            header("Location: $url");
         }
 
         if (!$team->setCaptain(USER_ID)) {
-            $data["body"]["error_message"] = "Failed to set a new captain to the newly created team!!!";
+            $_SESSION["flash_message"] = "Failed to set a new captain to the newly created team!!!";
 
-            // get css stylesheets
-            ob_start();
-            require_once("resources/views/error/error.php");
-            $data["head"]["css"] = ob_get_clean();
-
-            // get body content
-            ob_start();
-            require_once("resources/views/error/error.php");
-            $data["body"]["content"] = ob_get_clean();
-
-            // finally, render page
-            $view->render("templates/base.php", $data);
+            header("Location: $url");
         }
 
-        // if a new team was successfully created, redirect the user to the home page
-        header('Location: index.php');
+        $_SESSION["flash_message"] = "Team {$team->name} was successfully created!";
+
+        // if a new team was successfully created, redirect the user to the list of teams
+        // he belongs to
+        header("Location: $url");
     }
 }

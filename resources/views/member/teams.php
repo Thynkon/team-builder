@@ -1,5 +1,11 @@
-<div class="wrapper">
-        <div id="my_teams" class="pure-g">
+<?php
+require_once("resources/views/helpers.php");
+?>
+
+<div id="my_teams_wrapper" class="wrapper">
+    <div class="flash_message"><?= flashMessage() ?></div>
+
+    <div id="my_teams" class="pure-g">
             <?php foreach ($data["body"]["teams"] as $team): ?>
                 <div class="pure-u-2-5">
                     <a href="index.php?controller=TeamController&method=showDetails&team_id=<?= $team->id ?>"><?= $team->name ?></a>
