@@ -1,6 +1,6 @@
 <?php
 
-use Thynkon\SimpleOrm\database\Connector;
+use Thynkon\SimpleOrm\database\DB;
 use Thynkon\SimpleOrm\Model;
 
 require_once("app/models/Team.php");
@@ -20,15 +20,10 @@ class Member extends Model
             $_SESSION["user"]["id"] = $this->id;
             $_SESSION["user"]["name"] = $this->name;
         }
-
-        echo "<pre>";
-        print_r($_SESSION);
-        echo "</pre>";
     }
 
     public function teams()
     {
-        $connector = \Thynkon\SimpleOrm\database\Connector::getInstance();
         $query = <<<EOL
 SELECT teams.`name`
 FROM members
@@ -37,14 +32,7 @@ INNER JOIN teams ON teams.id = team_member.team_id
 WHERE members.id = :id;
 EOL;
 
-        $connector = Connector::getInstance();
-        $connection = $connector->getConnection();
-        $statement = $connection->prepare($query);
-
-        if ($statement->execute(["id" => $this->id])) {
-            $result = $statement->fetchAll(\PDO::FETCH_CLASS, Team::class);
-        }
-
-        return $result;
+        $connector = DB::getInstance();
+        return $connector->selectMany($query, ["id" => $this->id], Team::class);
     }
 }
