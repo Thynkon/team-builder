@@ -30,14 +30,29 @@ EOL;
     {
         $query = <<<EOL
 SELECT `members`.name
-FROM `teams`
-INNER JOIN team_member ON team_member.team_id = `teams`.id
+FROM `team_member`
 INNER JOIN members ON members.id = team_member.member_id
-WHERE `teams`.id = :id
+WHERE `team_member`.team_id = :id
 AND team_member.is_captain = 1;
 EOL;
 
         $connector = DB::getInstance();
         return $connector->selectOne($query, ["id" => $this->id], Member::class);
+    }
+
+    public function setCaptain(int $user_id)
+    {
+        $query = <<< EOL
+INSERT INTO `team_member`
+SET member_id = :member_id, team_id = :team_id, membership_type = :membership_type, is_captain = :is_captain;
+EOL;
+
+        $connector = DB::getInstance();
+        return $connector->execute($query, [
+            "member_id" => $user_id,
+            "team_id" => $this->id,
+            "membership_type" => 1,
+            "is_captain" => 1
+        ]);
     }
 }

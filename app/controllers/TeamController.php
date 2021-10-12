@@ -43,7 +43,8 @@ class TeamController
         // finally, render page
         $view->render("templates/base.php", $data);
     }
-    public function save()
+
+    public function createForm()
     {
         $member_list = Member::all();
         $member = Member::find(USER_ID);
@@ -51,7 +52,6 @@ class TeamController
         $view = new View();
 
         $data = [];
-        $data["body"]["members"] = $member_list;
         $data["body"]["username"] = $member->name;
 
         // set title
@@ -59,15 +59,94 @@ class TeamController
 
         // get css stylesheets
         ob_start();
-        require_once("resources/views/member/style.php");
+        require_once("resources/views/team/style.php");
         $data["head"]["css"] = ob_get_clean();
 
         // get body content
         ob_start();
-        require_once("resources/views/member/member.php");
+        require_once("resources/views/team/create.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page
         $view->render("templates/base.php", $data);
+    }
+
+    public function create()
+    {
+        if (!isset($_REQUEST["team_name"])) {
+            // temporary check
+            // should display an error message and
+            // return a proper HTTP error code
+            exit;
+        }
+
+        $view = new View();
+        $data = [];
+        // set title
+        $data["head"]["title"] = "Team-builder";
+
+        $team = new Team();
+        $team->name = $_REQUEST["team_name"];
+        // default value => Attente de validation
+        $team->state_id = 2;
+
+        $existing_team = Team::where("name", $_REQUEST["team_name"]);
+
+
+        if (count($existing_team) !== 0) {
+            $data["body"]["error_message"] = "There is already a team named {$_REQUEST["team_name"]}!!!";
+
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/style.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // get body content
+            ob_start();
+            require_once("resources/views/error/error.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $view->render("templates/base.php", $data);
+            return;
+        }
+
+        // show error message
+        if (!$team->create()) {
+            $data["body"]["error_message"] = "Failed to create a new team!!!";
+
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/error.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // get body content
+            ob_start();
+            require_once("resources/views/error/error.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $view->render("templates/base.php", $data);
+        }
+
+        if (!$team->setCaptain(USER_ID)) {
+            $data["body"]["error_message"] = "Failed to set a new captain to the newly created team!!!";
+
+            // get css stylesheets
+            ob_start();
+            require_once("resources/views/error/error.php");
+            $data["head"]["css"] = ob_get_clean();
+
+            // get body content
+            ob_start();
+            require_once("resources/views/error/error.php");
+            $data["body"]["content"] = ob_get_clean();
+
+            // finally, render page
+            $view->render("templates/base.php", $data);
+        }
+
+        // if a new team was successfully created, redirect the user to the home page
+        header('Location: index.php');
     }
 }
