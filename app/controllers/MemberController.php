@@ -8,7 +8,8 @@ class MemberController
 {
     public function teamsList()
     {
-        $member_list = Member::all();
+        $member_list = Member::orderBy("name");
+
         $member = Member::find(USER_ID);
 
         $view = new View();

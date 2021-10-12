@@ -92,9 +92,8 @@ class TeamController
 
         $existing_team = Team::where("name", $_REQUEST["team_name"]);
 
-
         if (count($existing_team) !== 0) {
-            $data["body"]["error_message"] = "There is already a team named {$_REQUEST["team_name"]}!!!";
+            $_SESSION["flash_message"] = "There is already a team named {$_REQUEST["team_name"]}!!!";
 
             // get css stylesheets
             ob_start();

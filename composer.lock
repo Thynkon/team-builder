@@ -2475,12 +2475,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Thynkon/simple-orm.git",
-                "reference": "d7701f6026ed661707f7631ca635227f889cc87d"
+                "reference": "a06a6898fbf9fb1aa90f47e2c8a4935ee330e7f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Thynkon/simple-orm/zipball/d7701f6026ed661707f7631ca635227f889cc87d",
-                "reference": "d7701f6026ed661707f7631ca635227f889cc87d",
+                "url": "https://api.github.com/repos/Thynkon/simple-orm/zipball/a06a6898fbf9fb1aa90f47e2c8a4935ee330e7f2",
+                "reference": "a06a6898fbf9fb1aa90f47e2c8a4935ee330e7f2",
                 "shasum": ""
             },
             "require": {
@@ -2513,7 +2513,7 @@
                 "issues": "https://github.com/Thynkon/simple-orm/issues",
                 "source": "https://github.com/Thynkon/simple-orm/tree/master"
             },
-            "time": "2021-10-04T19:13:09+00:00"
+            "time": "2021-10-08T08:47:45+00:00"
         },
         {
             "name": "webmozart/assert",

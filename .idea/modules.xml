@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/programming/Looper/.idea/Looper.iml" filepath="$USER_HOME$/programming/Looper/.idea/Looper.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/team-builder.iml" filepath="$PROJECT_DIR$/.idea/team-builder.iml" />
     </modules>
   </component>
