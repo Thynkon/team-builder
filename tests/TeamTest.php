@@ -133,14 +133,15 @@ class TeamTest extends TestCase
     }
 
     /**
-     * Assume the well-know dataset of 'teambuilder.sql'
-     * @covers $member->teams()
-     */
-    public function testTeams()
+     * @covers Team->members()
+    */
+    public function testMemberList()
     {
-        // NEED TO IMPLEMENT RELATIONSHIPS
-       // $this->assertEquals(1,count(Member::find(3)->teams()));
-       // $this->assertEquals(0,count(Member::find(9)->teams()));
-       // $this->assertEquals(3,count(Member::find(10)->teams()));
+        $team = Team::find(1);
+
+        $this->assertCount(
+            4,
+            $team->members()
+        );
     }
 }
