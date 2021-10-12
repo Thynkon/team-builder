@@ -1,8 +1,8 @@
 <?php
 
+require_once(".env.php");
 require_once("app/models/Team.php");
 require_once("app/models/Member.php");
-require_once(".env.php");
 
 use ByJG\DbMigration\Exception\DatabaseDoesNotRegistered;
 use ByJG\DbMigration\Exception\DatabaseIsIncompleteException;

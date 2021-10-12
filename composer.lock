@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "600b1dae2bca23513101839dbf88ec8b",
+    "content-hash": "f732d2a2c6991affb43c172ad5380757",
     "packages": [
         {
             "name": "byjg/anydataset",
@@ -2470,52 +2470,6 @@
             "time": "2021-07-28T10:34:58+00:00"
         },
         {
-            "name": "thynkon/simple-orm",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Thynkon/simple-orm.git",
-                "reference": "a06a6898fbf9fb1aa90f47e2c8a4935ee330e7f2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Thynkon/simple-orm/zipball/a06a6898fbf9fb1aa90f47e2c8a4935ee330e7f2",
-                "reference": "a06a6898fbf9fb1aa90f47e2c8a4935ee330e7f2",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "php": ">= 8.0.0"
-            },
-            "require-dev": {
-                "byjg/migration": "^4.2",
-                "phpunit/phpunit": "^9.5"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Thynkon\\SimpleOrm\\": "src/",
-                    "Thynkon\\SimpleOrm\\Test\\": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "thynkon",
-                    "email": "thynkon@protonmail.com"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/Thynkon/simple-orm/issues",
-                "source": "https://github.com/Thynkon/simple-orm/tree/master"
-            },
-            "time": "2021-10-08T08:47:45+00:00"
-        },
-        {
             "name": "webmozart/assert",
             "version": "1.10.0",
             "source": {
@@ -2577,9 +2531,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "thynkon/simple-orm": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

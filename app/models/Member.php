@@ -1,8 +1,7 @@
 <?php
 
-use Thynkon\SimpleOrm\database\DB;
-use Thynkon\SimpleOrm\Model;
-
+require_once("app/lib/database/DB.php");
+require_once("app/lib/Model.php");
 require_once("app/models/Team.php");
 
 class Member extends Model

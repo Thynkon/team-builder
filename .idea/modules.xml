@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$USER_HOME$/programming/simple-orm/.idea/simple-orm.iml" filepath="$USER_HOME$/programming/simple-orm/.idea/simple-orm.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/team-builder.iml" filepath="$PROJECT_DIR$/.idea/team-builder.iml" />
     </modules>
   </component>
