@@ -12,7 +12,9 @@
         <a href="index.php?controller=MemberController&method=teamsList">Show list of teams</a>
     </div>
 
-    <br/>
+    <div class="pure-u-1-3">
+        <a href="index.php?controller=MemberController&method=userTeamList">Show my teams</a>
+    </div>
 
     <div class="pure-u-1-3">
         <a href="index.php?controller=MemberController&method=modsList">List of moderators</a>

@@ -25,11 +25,12 @@ class Member extends Model
     public function teams()
     {
         $query = <<<EOL
-SELECT teams.`name`
+SELECT teams.*
 FROM members
 INNER JOIN team_member ON team_member.member_id = members.id
 INNER JOIN teams ON teams.id = team_member.team_id
-WHERE members.id = :id;
+WHERE members.id = :id
+ORDER BY teams.name;
 EOL;
 
         $connector = DB::getInstance();
@@ -42,7 +43,8 @@ EOL;
 SELECT `members`.*
 FROM `members`
 INNER JOIN `roles` ON `roles`.id = members.role_id
-WHERE `roles`.slug = "MOD";
+WHERE `roles`.slug = "MOD"
+ORDER BY `members`.name;
 EOL;
 
         $connector = DB::getInstance();

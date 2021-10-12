@@ -133,7 +133,7 @@ class TeamTest extends TestCase
     }
 
     /**
-     * @covers Team->members()
+     * @covers team->members()
     */
     public function testMemberList()
     {
@@ -142,6 +142,24 @@ class TeamTest extends TestCase
         $this->assertCount(
             4,
             $team->members()
+        );
+    }
+
+    /**
+     * @covers team->captain()
+     */
+    public function testCaptain()
+    {
+        $team = Team::find(1);
+
+        $this->assertEquals(
+            "Göran",
+            $team->captain()->name,
+        );
+
+        $this->assertNotEquals(
+            "Mario",
+            $team->captain()->name,
         );
     }
 }

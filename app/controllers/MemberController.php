@@ -34,6 +34,33 @@ class MemberController
         $view->render("templates/base.php", $data);
     }
 
+    public function userTeamList()
+    {
+        $member = Member::find(USER_ID);
+
+        $view = new View();
+
+        $data = [];
+        $data["body"]["teams"] = $member->teams();
+        $data["body"]["username"] = $member->name;
+
+        // set title
+        $data["head"]["title"] = "Team-builder";
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/member/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // get body content
+        ob_start();
+        require_once("resources/views/member/teams.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $view->render("templates/base.php", $data);
+    }
+
     public function modsList()
     {
         $moderators_list = Member::moderators();
