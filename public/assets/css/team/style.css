@@ -1,0 +1,13 @@
+.upper-case {
+  text-transform: uppercase;
+}
+
+#team_members_list {
+  flex-direction: column;
+}
+#team_members_list div {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+/*# sourceMappingURL=style.css.map */

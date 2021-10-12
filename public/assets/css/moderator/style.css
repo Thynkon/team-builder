@@ -1,0 +1,13 @@
+.upper-case {
+  text-transform: uppercase;
+}
+
+#moderators_list {
+  flex-direction: column;
+}
+#moderators_list div {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+/*# sourceMappingURL=style.css.map */

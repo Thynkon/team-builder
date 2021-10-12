@@ -1,9 +1,9 @@
-<table>
-    <?php foreach ($data["body"]["mods"] as $mod): ?>
-        <tr>
-            <td>
+<div class="wrapper">
+    <div id="moderators_list" class="pure-g">
+        <?php foreach ($data["body"]["mods"] as $mod): ?>
+            <div class="pure-u">
                 <?= $mod->name ?>
-            </td>
-        </tr>
-    <?php endforeach ?>
-</table>
+            </div>
+        <?php endforeach ?>
+    </div>
+</div>

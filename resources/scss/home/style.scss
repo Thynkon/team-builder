@@ -22,28 +22,33 @@ div.header {
 }
 
 #home_links {
+    flex-direction: column;
+    align-content: center;
     justify-content: center;
-    margin-top: 5vh;
+
     text-align: center;
+
+    div {
+        a {
+            width: 100%;
+        }
+
+        margin-top: 1vw;
+        margin-bottom: 1vw;
+    }
 }
 
-@media only screen and (max-width: 600px) {
-    header {
-        height: 60vh;
-    }
-    #quiz_buttons_parent {
-        flex-direction: column;
-        justify-content: center !important;
-        align-content: center;
+.wrapper {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
 
-        margin-top: $mobile_index_button_margin;
+#main_title {
+    text-decoration: none;
+    color: #FFFFFF;
+}
 
-        a {
-            width: 100vw;
-        }
-    }
-
-    #take_quiz, #create_quiz {
-        margin-bottom: $mobile_index_button_margin;
-    }
+button {
+    width: 100%;
 }

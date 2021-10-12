@@ -32,13 +32,13 @@ class TeamController
 
         // get css stylesheets
         ob_start();
-        require_once("resources/views/member/style.php");
+        require_once("resources/views/team/style.php");
         $data["head"]["css"] = ob_get_clean();
 
         // get body content
         ob_start();
         require_once("resources/views/templates/header.php");
-        require_once("resources/views/team/team.php");
+        require_once("resources/views/team/list.php");
         $data["body"]["content"] = ob_get_clean();
 
         // finally, render page

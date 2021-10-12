@@ -1,0 +1,13 @@
+.upper-case {
+  text-transform: uppercase;
+}
+
+#my_teams {
+  margin-top: 5vh;
+}
+#my_teams div {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+/*# sourceMappingURL=style.css.map */

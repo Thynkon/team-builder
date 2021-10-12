@@ -1,0 +1,11 @@
+@import "../lib/variables";
+@import "../lib/lib";
+
+#team_members_list {
+    flex-direction: column;
+
+    div {
+        margin-top: 2vh;
+        margin-bottom: 2vh;
+    }
+}
