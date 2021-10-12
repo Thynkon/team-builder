@@ -35,4 +35,17 @@ EOL;
         $connector = DB::getInstance();
         return $connector->selectMany($query, ["id" => $this->id], Team::class);
     }
+
+    public static function moderators()
+    {
+        $query = <<<EOL
+SELECT `members`.*
+FROM `members`
+INNER JOIN `roles` ON `roles`.id = members.role_id
+WHERE `roles`.slug = "MOD";
+EOL;
+
+        $connector = DB::getInstance();
+        return $connector->selectMany($query, [], static::class);
+    }
 }

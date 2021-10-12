@@ -9,15 +9,10 @@
 
 
 <table>
-    <?php foreach ($data["body"]["members"] as $member): ?>
+    <?php foreach ($data["body"]["mods"] as $mod): ?>
         <tr>
             <td>
-                <?= $member->name ?>
-            </td>
-            <td>
-                <?php foreach ($member->teams() as $team): ?>
-                    <span><?= $team->name ?></span>
-                <?php endforeach; ?>
+                <?= $mod->name ?>
             </td>
         </tr>
     <?php endforeach ?>
