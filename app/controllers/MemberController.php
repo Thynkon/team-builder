@@ -28,6 +28,7 @@ class MemberController
 
         // get body content
         ob_start();
+        require_once("resources/views/templates/header.php");
         require_once("resources/views/member/member.php");
         $data["body"]["content"] = ob_get_clean();
 
@@ -55,6 +56,7 @@ class MemberController
 
         // get body content
         ob_start();
+        require_once("resources/views/templates/header.php");
         require_once("resources/views/member/teams.php");
         $data["body"]["content"] = ob_get_clean();
 
@@ -83,6 +85,7 @@ class MemberController
 
         // get body content
         ob_start();
+        require_once("resources/views/templates/header.php");
         require_once("resources/views/moderator/moderator.php");
         $data["body"]["content"] = ob_get_clean();
 

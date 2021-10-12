@@ -37,6 +37,7 @@ class TeamController
 
         // get body content
         ob_start();
+        require_once("resources/views/templates/header.php");
         require_once("resources/views/team/team.php");
         $data["body"]["content"] = ob_get_clean();
 
@@ -64,6 +65,7 @@ class TeamController
 
         // get body content
         ob_start();
+        require_once("resources/views/templates/header.php");
         require_once("resources/views/team/create.php");
         $data["body"]["content"] = ob_get_clean();
 

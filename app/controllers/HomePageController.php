@@ -26,6 +26,7 @@ class HomePageController
 
         // get body content
         ob_start();
+        require_once("resources/views/templates/header.php");
         require_once("resources/views/home/home.php");
         $data["body"]["content"] = ob_get_clean();
 
