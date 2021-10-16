@@ -3,10 +3,11 @@
 require_once("app/lib/database/DB.php");
 require_once("app/lib/Model.php");
 require_once("app/models/Team.php");
+require_once("app/models/Role.php");
 
 class Member extends Model
 {
-    static protected string $table = "members";
+    static public string $table = "members";
     protected string $primaryKey = "id";
     public int $id;
     public string $name;
@@ -23,14 +24,12 @@ class Member extends Model
 
     public function teams()
     {
-        $query = <<<EOL
-SELECT teams.*
-FROM members
-INNER JOIN team_member ON team_member.member_id = members.id
-INNER JOIN teams ON teams.id = team_member.team_id
-WHERE members.id = :id
-ORDER BY teams.name;
-EOL;
+        $query  = sprintf("SELECT %s.* ", Team::$table);
+        $query .= sprintf("FROM %s ", static::$table);
+        $query .= sprintf("INNER JOIN team_member ON team_member.member_id = %s.id ", static::$table);
+        $query .= sprintf("INNER JOIN %s ON %s.id = team_member.team_id ", Team::$table, Team::$table);
+        $query .= sprintf("WHERE %s.id = :id ", static::$table);
+        $query .= sprintf("ORDER BY %s.name;", Team::$table);
 
         $connector = DB::getInstance();
         return $connector->selectMany($query, ["id" => $this->id], Team::class);
@@ -38,13 +37,11 @@ EOL;
 
     public static function moderators()
     {
-        $query = <<<EOL
-SELECT `members`.*
-FROM `members`
-INNER JOIN `roles` ON `roles`.id = members.role_id
-WHERE `roles`.slug = "MOD"
-ORDER BY `members`.name;
-EOL;
+        $query = sprintf("SELECT `%s`.*", static::$table);
+        $query .= sprintf("FROM `%s` ", static::$table);
+        $query .= sprintf("INNER JOIN `%s` ON `%s`.id = %s.role_id ", Role::$table, Role::$table, static::$table);
+        $query .= sprintf("WHERE `%s`.slug = 'MOD' ", Role::$table);
+        $query .= sprintf("ORDER BY `%s`.name;", static::$table);
 
         $connector = DB::getInstance();
         return $connector->selectMany($query, [], static::class);
