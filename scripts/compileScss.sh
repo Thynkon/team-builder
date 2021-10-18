@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # set -e
-# set -x
+set -x
 
 main() {
 	local READONLY SCSS_PATH="./resources/scss"
