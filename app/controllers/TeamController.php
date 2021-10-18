@@ -4,6 +4,7 @@ require_once("vendor/autoload.php");
 require_once(".env.php");
 require_once("app/lib/View.php");
 require_once("app/models/Member.php");
+require_once("app/lib/FlashMessage.php");
 
 class TeamController
 {
@@ -18,13 +19,11 @@ class TeamController
 
         $team = Team::find($_REQUEST["team_id"]);
         $members_list = $team->members();
-        $member = Member::find(USER_ID);
 
         $view = new View();
 
         $data = [];
         $data["body"]["team"] = $team;
-        $data["body"]["username"] = $member->name;
         $data["body"]["members"] = $members_list;
 
         // set title
@@ -48,12 +47,9 @@ class TeamController
     public function createForm()
     {
         $member_list = Member::all();
-        $member = Member::find(USER_ID);
 
         $view = new View();
-
         $data = [];
-        $data["body"]["username"] = $member->name;
 
         // set title
         $data["head"]["title"] = "Team-builder";
@@ -95,19 +91,21 @@ class TeamController
         $team->state_id = 2;
 
         if (!$team->create()) {
-            $_SESSION["flash_message"] = "Failed to create a new team!!!";
-            $_SESSION["flash_message"] .= " There is already a team named {$_REQUEST["team_name"]}!!!";
-
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Failed to create a new team!!!";
+            $_SESSION["flash_message"]["value"] .= " There is already a team named {$_REQUEST["team_name"]}!!!";
             header("Location: $url");
         }
 
         if (!$team->setCaptain(USER_ID)) {
-            $_SESSION["flash_message"] = "Failed to set a new captain to the newly created team!!!";
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Failed to set a new captain to the newly created team!!!";
 
             header("Location: $url");
         }
 
-        $_SESSION["flash_message"] = "Team {$team->name} was successfully created!";
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "Team {$team->name} was successfully created!";
 
         // if a new team was successfully created, redirect the user to the list of teams
         // he belongs to

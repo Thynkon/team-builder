@@ -1,9 +1,11 @@
 <?php
-require_once("resources/views/helpers.php");
+require_once("app/lib/FlashMessage.php")
 ?>
 
 <div id="my_teams_wrapper" class="wrapper">
-    <div class="flash_message"><?= flashMessage() ?></div>
+    <?php $message = FlashMessage::get(); ?>
+
+    <div class="flash_message <?= is_array($message) ? ($message["type"] === FlashMessage::OK ? "ok" : "error") : "" ?>"><?= is_array($message) ? $message["value"] : ""?></div>
 
     <div id="my_teams" class="pure-g">
             <?php foreach ($data["body"]["teams"] as $team): ?>

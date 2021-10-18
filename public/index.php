@@ -23,6 +23,9 @@ function main()
         $method = $_GET["method"];
     }
 
+    // store user information in $_SESSION
+    Member::login(USER_ID);
+
     $c = new $controller();
     $c->$method();
 }

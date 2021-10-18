@@ -10,13 +10,10 @@ class MemberController
     {
         $member_list = Member::orderBy("name");
 
-        $member = Member::find(USER_ID);
-
         $view = new View();
 
         $data = [];
         $data["body"]["members"] = $member_list;
-        $data["body"]["username"] = $member->name;
 
         // set title
         $data["head"]["title"] = "Team-builder";
@@ -44,7 +41,6 @@ class MemberController
 
         $data = [];
         $data["body"]["teams"] = $member->teams();
-        $data["body"]["username"] = $member->name;
 
         // set title
         $data["head"]["title"] = "Team-builder";
@@ -67,13 +63,11 @@ class MemberController
     public function modsList()
     {
         $moderators_list = Member::moderators();
-        $member = Member::find(USER_ID);
 
         $view = new View();
 
         $data = [];
         $data["body"]["mods"] = $moderators_list;
-        $data["body"]["username"] = $member->name;
 
         // set title
         $data["head"]["title"] = "Team-builder";

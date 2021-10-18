@@ -5,7 +5,7 @@
 
     <div id="login_username_parent" class="pure-g">
         <div id="login_username" class="pure-u">
-            Authentifié en tant que: <?= $data["body"]["username"]?>
+            Authentifié en tant que: <?= $_SESSION["user"]["name"]?>
         </div>
     </div>
 </div>

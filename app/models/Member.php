@@ -14,11 +14,13 @@ class Member extends Model
     public string $password;
     public int $role_id;
 
-    public function login()
+    public static function login(int $userId = 0)
     {
         if (isset($_SESSION)) {
-            $_SESSION["user"]["id"] = $this->id;
-            $_SESSION["user"]["name"] = $this->name;
+            $member = static::find($userId);
+
+            $_SESSION["user"]["id"] = $member->id;
+            $_SESSION["user"]["name"] = $member->name;
         }
     }
 

@@ -8,14 +8,9 @@ class HomePageController
 {
     public function index()
     {
-        $member = Member::find(USER_ID);
-        $member->login();
-
         $view = new View();
 
         $data = [];
-        $data["body"]["username"] = $member->name;
-
         // set title
         $data["head"]["title"] = "Team-builder";
 
