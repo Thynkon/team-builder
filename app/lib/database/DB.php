@@ -71,7 +71,6 @@ class DB extends Singleton
             $statement->execute($args);
             return $this->connection->lastInsertId();
         } catch (\PDOException $exception) {
-            echo $exception->getMessage();
             return false;
         }
     }
