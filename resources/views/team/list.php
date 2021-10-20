@@ -1,9 +1,11 @@
-<div class="wrapper">
-    <div id="team_members_list" class="pure-g">
-        <?php foreach ($data["body"]["members"] as $member): ?>
-            <div class="pure-u">
-                <?= $member->name ?>
+<div class="wrapper has-text-centered">
+    <div id="team_members_list" class="pure-u-1-4">
+        <?php foreach ($data["body"]["members"] as $teamMember): ?>
+            <div>
+                <?= $teamMember->name ?>
             </div>
         <?php endforeach ?>
     </div>
+
+    <?= $data["body"]["addTeamForm"] ?? "" ?>
 </div>
