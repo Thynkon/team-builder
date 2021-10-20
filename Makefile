@@ -17,3 +17,6 @@ vendor: composer.json composer.lock
 
 css:
 	./scripts/compileScss.sh
+
+clean:
+	rm -r ./public/assets/css/*
