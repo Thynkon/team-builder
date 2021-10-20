@@ -49,4 +49,61 @@ class Team extends Model
             "is_captain" => 1
         ]);
     }
+
+    public function eligibleMembers()
+    {
+        $members = $this->members();
+        $membersIds = array_map(function($member)
+            {
+                return $member->id;
+            }, $members
+        );
+
+        $query  = sprintf("SELECT DISTINCT %s.*, COUNT(*) AS memberships ", Member::$table);
+        $query .= sprintf("FROM %s ", Member::$table);
+        $query .= sprintf("INNER JOIN team_member ON team_member.member_id = %s.id ", Member::$table);
+        $query .= sprintf("WHERE team_member.member_id NOT IN (");
+        foreach ($membersIds as $memberId) {
+            $query .= "$memberId,";
+        }
+        $query = substr($query, 0, -1);
+        $query .= ") ";
+        $query .= sprintf("GROUP BY team_member.member_id ");
+        $query .= sprintf("HAVING memberships < %d ", MAX_MEMBERSHIP);
+        $query .= sprintf("ORDER BY %s.name;", Member::$table);
+
+        $connector = DB::getInstance();
+        return $connector->selectMany($query, [], Member::class);
+    }
+
+    public function addMember(int $id)
+    {
+        $query  = "INSERT INTO `team_member` ";
+        $query .= "SET member_id = :member_id, team_id = :team_id, membership_type = :membership_type, is_captain = :is_captain; ";
+
+        $connector = DB::getInstance();
+        return $connector->execute($query, [
+            "member_id" => $id,
+            "team_id" => $this->id,
+            "membership_type" => 1,
+            "is_captain" => 0
+        ]);
+    }
+
+    public function isMemberEligible(int $id): bool
+    {
+        $query  = "SELECT TRUE ";
+        $query .= "FROM team_member ";
+        $query .= "WHERE member_id = :member_id ";
+        $query .= "GROUP BY member_id ";
+        $query .= sprintf("HAVING COUNT(*) < %d;", MAX_MEMBERSHIP);
+
+        $result = null;
+        $connector = DB::getInstance();
+
+        $result = $connector->selectOne($query, ["member_id" => $id]);
+
+        // is result is empty, is means that the database returned nothing
+        return !($result === null);
+    }
 }

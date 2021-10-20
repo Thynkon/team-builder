@@ -48,4 +48,19 @@ class Member extends Model
         $connector = DB::getInstance();
         return $connector->selectMany($query, [], static::class);
     }
+
+    public function isCaptain(int $id): bool
+    {
+        $query  = "SELECT TRUE ";
+        $query .= "FROM team_member ";
+        $query .= "WHERE member_id = :member_id AND team_id = :team_id AND is_captain = true;";
+
+        $result = null;
+        $connector = DB::getInstance();
+
+        $result = $connector->selectOne($query, ["member_id" => $this->id, "team_id" => $id]);
+
+        // is result is empty, is means that the database returned nothing
+        return $result === null ? false : true;
+    }
 }
