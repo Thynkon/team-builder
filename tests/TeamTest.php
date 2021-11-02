@@ -162,4 +162,16 @@ class TeamTest extends TestCase
             $team->captain()->name,
         );
     }
+
+    /**
+     * @covers team->numberOfMembers
+    */
+    public function testNumberOfMembers()
+    {
+        $team = Team::find(1);
+        $this->assertEquals(3, $team->numberOfMembers());
+
+        $team = Team::find(12);
+        $this->assertNotEquals(4, $team->numberOfMembers());
+    }
 }

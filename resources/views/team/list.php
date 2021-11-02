@@ -8,4 +8,5 @@
     </div>
 
     <?= $data["body"]["addTeamForm"] ?? "" ?>
+    <?= $data["body"]["requestForm"] ?? "" ?>
 </div>

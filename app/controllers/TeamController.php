@@ -26,6 +26,7 @@ class TeamController
         $data = [];
         $data["body"]["team"] = $team;
         $data["body"]["members"] = $members_list;
+        $data["body"]["user"] = $member;
 
         // set title
         $data["head"]["title"] = "Team-builder";
@@ -41,6 +42,16 @@ class TeamController
             $data["body"]["team"] = $team;
             require_once("resources/views/team/add_members.php");
             $data["body"]["addTeamForm"] = ob_get_clean();
+        }
+
+        // only show request form if user is eligible
+        if (!$member->belongsToTeam($team->id) || $member->isCaptain($team->id)) {
+            if ($team->numberOfMembers() < Team::MAX_MEMBERS_ALLOWED && $member->numberOfTeams() < Member::MAX_TEAM_MEMBERSHIP) {
+                ob_start();
+                require_once("resources/views/team/request_invitation.php");
+                $data["body"]["requestForm"] = ob_get_clean();
+            }
+
         }
 
         // get body content
@@ -164,6 +175,57 @@ class TeamController
 
         // if a new team was successfully created, redirect the user to the list of teams
         // he belongs to
+        header("Location: $url");
+    }
+
+    public function requestInvitation()
+    {
+        $url = "/index.php";
+        if (!isset($_REQUEST["memberId"])) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "You have to authentify yourself (user id missing)!";
+
+            header("Location: $url");
+        }
+
+        if (!isset($_REQUEST["teamId"])) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Missing team id!";
+
+            header("Location: $url");
+        }
+
+        // If user wants to request an invitation
+        if (isset($_REQUEST["requestInvitation"]) && $_REQUEST["requestInvitation"] === 'on') {
+            $team = Team::find($_REQUEST["teamId"]);
+            $member = Member::find($_REQUEST["memberId"]);
+
+            if ($team->numberOfMembers() >= Team::MAX_MEMBERS_ALLOWED) {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "{$team->name} already has " . Team::MAX_MEMBERS_ALLOWED . " members!";
+
+                header("Location: $url");
+            }
+
+            if ($member->numberOfTeams() >= Member::MAX_TEAM_MEMBERSHIP) {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "{$member->name} has reached the max number of teams!";
+
+                header("Location: $url");
+            }
+
+            if (!$member->requestInvitation($team->id)) {
+                $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+                $_SESSION["flash_message"]["value"] = "Failed to request invitation!";
+
+                header("Location: $url");
+            }
+
+            $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+            $_SESSION["flash_message"]["value"] = "Request was successfully sent to {$team->name}";
+            $url = "/index.php?controller=TeamController&method=showDetails&team_id={$_REQUEST["teamId"]}";
+        }
+
         header("Location: $url");
     }
 }

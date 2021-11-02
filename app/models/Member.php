@@ -14,6 +14,13 @@ class Member extends Model
     public string $password;
     public int $role_id;
 
+    public const MEMBERSHIP_INACTIVE = 0;
+    public const MEMBERSHIP_ACTIVE = 1;
+    public const MEMBERSHIP_INVITATION = 2;
+    public const MEMBERSHIP_REQUEST = 3;
+
+    public const MAX_TEAM_MEMBERSHIP = 4;
+
     public static function login(int $userId = 0)
     {
         if (isset($_SESSION)) {
@@ -62,5 +69,52 @@ class Member extends Model
 
         // is result is empty, is means that the database returned nothing
         return $result === null ? false : true;
+    }
+
+    public function belongsToTeam(int $id): bool
+    {
+        $query  = "SELECT true ";
+        $query .= "FROM `team_member` ";
+        $query .= "WHERE member_id = :member_id AND team_id = :team_id;";
+
+        $result = null;
+        $connector = DB::getInstance();
+
+        $result = $connector->selectOne($query, ["member_id" => $this->id, "team_id" => $id]);
+
+        // is result is empty, is means that the database returned nothing
+        return $result === null ? false : true;
+    }
+
+    public function requestInvitation(int $id): bool
+    {
+        $query  = "INSERT INTO `team_member` ";
+        $query .= "SET member_id = :member_id, team_id = :team_id, membership_type = :membership_type, is_captain = :is_captain; ";
+
+        $connector = DB::getInstance();
+        return $connector->insert($query, [
+            "member_id" => $this->id,
+            "team_id" => $id,
+            "membership_type" => self::MEMBERSHIP_REQUEST,
+            "is_captain" => 0
+        ]);
+    }
+
+    public function numberOfTeams(): int
+    {
+        $query  = "SELECT COUNT(*) AS numberOfTeams ";
+        $query .= "FROM team_member ";
+        $query .= "WHERE member_id = :member_id ";
+        $query .= "AND membership_type = :membership_type;";
+
+        $result = null;
+        $connector = DB::getInstance();
+
+        $result = $connector->selectOne($query, ["member_id" => $this->id, "membership_type" => Member::MEMBERSHIP_ACTIVE]);
+        if ($result !== null) {
+            return $result["numberOfTeams"];
+        } else {
+            return 0;
+        }
     }
 }

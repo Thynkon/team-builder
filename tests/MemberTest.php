@@ -140,4 +140,32 @@ class MemberTest extends TestCase
         $this->assertTrue(Member::destroy($id)); // expected to succeed
         $this->assertNull(Member::find($id)); // we should not find it back
     }
+
+    /**
+     * @covers Member::belongsToTeam(id)
+    */
+    public function testBelongsToTeam()
+    {
+        $member = Member::find(USER_ID);
+        $this->assertTrue($member->belongsToTeam(3));
+
+        $this->assertFalse($member->belongsToTeam(2));
+    }
+
+    public function testRequestInvitation()
+    {
+        $member = Member::find(USER_ID);
+        $team = Team::find(2);
+        $this->assertTrue($member->requestInvitation($team->id));
+        $team = Team::find(3);
+        $this->assertFalse($member->requestInvitation($team->id));
+    }
+
+    public function testNumberOfTeams()
+    {
+        $member = Member::find(USER_ID);
+        $this->assertEquals(1, $member->numberOfTeams());
+        $member = Member::find(2);
+        $this->assertNotEquals(5, $member->numberOfTeams());
+    }
 }

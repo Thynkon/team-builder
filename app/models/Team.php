@@ -11,6 +11,8 @@ class Team extends Model
     public string $name;
     public int $state_id;
 
+    public const MAX_MEMBERS_ALLOWED = 6;
+
     public function members()
     {
         $query  = sprintf("SELECT %s.* ", Member::$table);
@@ -69,7 +71,7 @@ class Team extends Model
         $query = substr($query, 0, -1);
         $query .= ") ";
         $query .= sprintf("GROUP BY team_member.member_id ");
-        $query .= sprintf("HAVING memberships < %d ", MAX_MEMBERSHIP);
+        $query .= sprintf("HAVING memberships < %d ", self::MAX_MEMBERS_ALLOWED);
         $query .= sprintf("ORDER BY %s.name;", Member::$table);
 
         $connector = DB::getInstance();
@@ -85,7 +87,7 @@ class Team extends Model
         return $connector->execute($query, [
             "member_id" => $id,
             "team_id" => $this->id,
-            "membership_type" => 1,
+            "membership_type" => Member::MEMBERSHIP_ACTIVE,
             "is_captain" => 0
         ]);
     }
@@ -96,7 +98,7 @@ class Team extends Model
         $query .= "FROM team_member ";
         $query .= "WHERE member_id = :member_id ";
         $query .= "GROUP BY member_id ";
-        $query .= sprintf("HAVING COUNT(*) < %d;", MAX_MEMBERSHIP);
+        $query .= sprintf("HAVING COUNT(*) < %d;", self::MAX_MEMBERS_ALLOWED);
 
         $result = null;
         $connector = DB::getInstance();
@@ -105,5 +107,23 @@ class Team extends Model
 
         // is result is empty, is means that the database returned nothing
         return !($result === null);
+    }
+
+    public function numberOfMembers()
+    {
+        $query  = "SELECT COUNT(*) AS numberOfMembers ";
+        $query .= "FROM team_member ";
+        $query .= "WHERE team_id = :team_id ";
+        $query .= "AND membership_type = :membership_type;";
+
+        $result = null;
+        $connector = DB::getInstance();
+
+        $result = $connector->selectOne($query, ["team_id" => $this->id, "membership_type" => Member::MEMBERSHIP_ACTIVE]);
+        if ($result !== null) {
+            return $result["numberOfMembers"];
+        } else {
+            return 0;
+        }
     }
 }
