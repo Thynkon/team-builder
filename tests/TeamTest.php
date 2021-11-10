@@ -135,7 +135,7 @@ class TeamTest extends TestCase
     /**
      * @covers team->members()
     */
-    public function testMemberList()
+    public function testMembers()
     {
         $team = Team::find(1);
 
@@ -161,6 +161,63 @@ class TeamTest extends TestCase
             "Mario",
             $team->captain()->name,
         );
+    }
+
+    /**
+     * @covers $team->eligibleMembers()
+    */
+    public function testEligibleMembers()
+    {
+        $team = Team::make(["name" => "dummy", "state_id" => 1]);
+        $team->create();
+
+        $this->assertCount(39, $team->eligibleMembers());
+        $this->assertNotCount(10, $team->eligibleMembers());
+    }
+
+    /**
+     * @covers team->setCaptain
+     */
+    public function testSetCaptain()
+    {
+        $team = new Team();
+        $team->name = "Mario's team";
+        $team->state_id = TeamState::where("slug", "WAIT_CHANG")[0]->id;
+        $team->create();
+
+        // member => mario
+        $member = Member::find(6);
+
+        $this->assertTrue($team->setCaptain($member->id));
+
+        // do not test if set captain returns false because it will always return true
+        // we should add an unique index to the database, so we can only have one captain
+        // per team
+    }
+
+    /**
+     * @covers $member->addMember()
+    */
+    public function testAddMember()
+    {
+        $team = Team::find(7);
+        // member => mario
+        $member = Member::find(6);
+
+        $this->assertTrue($team->addMember($member->id));
+        // cannot add the same member twice
+        $this->assertFalse($team->addMember($member->id));
+    }
+
+    public function testIsMemberEligible()
+    {
+        // member => mario
+        $member = Member::find(6);
+        $team = Team::find(11);
+        $this->assertTrue($team->isMemberEligible($member->id));
+
+        $team = Team::find(3);
+        $this->assertFalse($team->isMemberEligible($member->id));
     }
 
     /**

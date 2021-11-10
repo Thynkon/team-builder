@@ -38,7 +38,7 @@ class Team extends Model
         return $connector->selectOne($query, ["id" => $this->id], Member::class);
     }
 
-    public function setCaptain(int $user_id)
+    public function setCaptain(int $user_id): bool
     {
         $query  = "INSERT INTO `team_member` ";
         $query .= "SET member_id = :member_id, team_id = :team_id, membership_type = :membership_type, is_captain = :is_captain; ";
@@ -55,8 +55,7 @@ class Team extends Model
     public function eligibleMembers()
     {
         $members = $this->members();
-        $membersIds = array_map(function($member)
-            {
+        $membersIds = array_map(function($member) {
                 return $member->id;
             }, $members
         );
@@ -64,12 +63,16 @@ class Team extends Model
         $query  = sprintf("SELECT DISTINCT %s.*, COUNT(*) AS memberships ", Member::$table);
         $query .= sprintf("FROM %s ", Member::$table);
         $query .= sprintf("INNER JOIN team_member ON team_member.member_id = %s.id ", Member::$table);
-        $query .= sprintf("WHERE team_member.member_id NOT IN (");
-        foreach ($membersIds as $memberId) {
-            $query .= "$memberId,";
+
+        if (count($members) > 0) {
+            $query .= sprintf("WHERE team_member.member_id NOT IN (");
+            foreach ($membersIds as $memberId) {
+                $query .= "$memberId,";
+            }
+            $query = substr($query, 0, -1);
+            $query .= ") ";
         }
-        $query = substr($query, 0, -1);
-        $query .= ") ";
+
         $query .= sprintf("GROUP BY team_member.member_id ");
         $query .= sprintf("HAVING memberships < %d ", self::MAX_MEMBERS_ALLOWED);
         $query .= sprintf("ORDER BY %s.name;", Member::$table);
@@ -78,22 +81,32 @@ class Team extends Model
         return $connector->selectMany($query, [], Member::class);
     }
 
-    public function addMember(int $id)
+    public function addMember(int $id): bool
     {
         $query  = "INSERT INTO `team_member` ";
         $query .= "SET member_id = :member_id, team_id = :team_id, membership_type = :membership_type, is_captain = :is_captain; ";
 
         $connector = DB::getInstance();
-        return $connector->execute($query, [
-            "member_id" => $id,
-            "team_id" => $this->id,
-            "membership_type" => Member::MEMBERSHIP_ACTIVE,
-            "is_captain" => 0
-        ]);
+        try {
+            return $connector->execute($query, [
+                "member_id" => $id,
+                "team_id" => $this->id,
+                "membership_type" => Member::MEMBERSHIP_ACTIVE,
+                "is_captain" => 0
+            ]);
+        } catch (\PDOException $exception) {
+            return false;
+        }
     }
 
     public function isMemberEligible(int $id): bool
     {
+        $member = Member::find($id);
+        // if a member already belongs to a team, it is not eligible
+        if ($member->belongsToTeam($this->id))  {
+            return false;
+        }
+
         $query  = "SELECT TRUE ";
         $query .= "FROM team_member ";
         $query .= "WHERE member_id = :member_id ";
