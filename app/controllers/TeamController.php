@@ -151,7 +151,7 @@ class TeamController
 
         $team = Team::find($_REQUEST["teamId"]);
         foreach ($_REQUEST["eligibleMembers"] as $memberId) {
-            if (!$team->isMemberEligible($team->id)) {
+            if (!$team->isMemberEligible($memberId)) {
                 $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
                 $_SESSION["flash_message"]["value"] = "Member with id => $memberId is not eligible !";
                 $_SESSION["flash_message"]["value"] .= "You may want to check how many teams he belongs to!";
