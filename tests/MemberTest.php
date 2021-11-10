@@ -56,7 +56,7 @@ class MemberTest extends TestCase
      */
     public function testAll()
     {
-        $this->assertEquals(51,count(Member::all()));
+        $this->assertEquals(51, count(Member::all()));
     }
 
     /**
@@ -64,7 +64,7 @@ class MemberTest extends TestCase
      */
     public function testFind()
     {
-        $this->assertInstanceOf(Member::class,Member::find(1));
+        $this->assertInstanceOf(Member::class, Member::find(1));
         $this->assertNull(Member::find(1000));
     }
 
@@ -73,19 +73,17 @@ class MemberTest extends TestCase
      */
     public function testWhere()
     {
-        // DISCUTER AVEC LE PROF (MOI JE RETOURNE UN QUERY STRING QUI ME
-        // PERMET D'APRES APELLER ->ORDER_BY, ETC...
-        //$this->assertEquals(5,count(Member::where("role_id",2)));
-       // $this->assertEquals(0,count(Member::where("role_id",222)));
+        $this->assertEquals(5, count(Member::where("role_id", 2)));
+        $this->assertEquals(0, count(Member::where("role_id", 222)));
     }
 
     /**
-     * @covers $member->create()
+     * @covers  $member->create()
      * @depends testAll
      */
     public function testCreate()
     {
-        $member = Member::make(["name" => "XXX","password" => 'XXXPa$$w0rd', "role_id" => 1]);
+        $member = Member::make(["name" => "XXX", "password" => 'XXXPa$$w0rd', "role_id" => 1]);
         $this->assertTrue($member->create());
         $this->assertFalse($member->create());
     }
@@ -99,7 +97,7 @@ class MemberTest extends TestCase
         $savename = $member->name;
         $member->name = "newname";
         $this->assertTrue($member->save());
-        $this->assertEquals("newname",Member::find(1)->name);
+        $this->assertEquals("newname", Member::find(1)->name);
         $member->name = $savename;
         $member->save();
     }
@@ -121,7 +119,7 @@ class MemberTest extends TestCase
     {
         $member = Member::find(1);
         $this->assertFalse($member->delete()); // expected to fail because of foreign key
-        $member = Member::make(["name" => "dummy","password" => "dummy", "role_id" => 1]);
+        $member = Member::make(["name" => "dummy", "password" => "dummy", "role_id" => 1]);
         $member->create(); // to get an id from the db
         $id = $member->id;
         $this->assertTrue($member->delete()); // expected to succeed
@@ -134,7 +132,7 @@ class MemberTest extends TestCase
     public function testDestroy()
     {
         $this->assertFalse(Member::destroy(1)); // expected to fail because of foreign key
-        $member = Member::make(["name" => "dummy","password" => "dummy", "role_id" => 1]);
+        $member = Member::make(["name" => "dummy", "password" => "dummy", "role_id" => 1]);
         $member->create(); // to get an id from the db
         $id = $member->id;
         $this->assertTrue(Member::destroy($id)); // expected to succeed
@@ -142,8 +140,43 @@ class MemberTest extends TestCase
     }
 
     /**
+     * @covers $member->teams()
+     */
+    public function testTeams()
+    {
+        // member => mario
+        $member = Member::find(6);
+        $this->assertCount(2, $member->teams());
+
+        $member = Member::find(1);
+        $this->assertNotCount(3, $member->teams());
+    }
+
+    /**
+     * @covers $member::moderators()
+     */
+    public function testModerators()
+    {
+        $this->assertCount(5, Member::moderators());
+        // should fail
+        $this->assertNotCount(3, Member::moderators());
+    }
+
+    /**
+     * @covers Member->isCaptain(id)
+     */
+    public function testIsCaptain()
+    {
+        $member = Member::find(1);
+
+        $this->assertTrue($member->isCaptain(2));
+        // should fail
+        $this->assertFalse($member->isCaptain(1));
+    }
+
+    /**
      * @covers Member::belongsToTeam(id)
-    */
+     */
     public function testBelongsToTeam()
     {
         $member = Member::find(USER_ID);
