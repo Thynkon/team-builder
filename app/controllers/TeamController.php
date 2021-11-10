@@ -45,7 +45,7 @@ class TeamController
         }
 
         // only show request form if user is eligible
-        if (!$member->belongsToTeam($team->id) || $member->isCaptain($team->id)) {
+        if ($team->isMemberEligible($member->id)) {
             if ($team->numberOfMembers() < Team::MAX_MEMBERS_ALLOWED && $member->numberOfTeams() < Member::MAX_TEAM_MEMBERSHIP) {
                 ob_start();
                 require_once("resources/views/team/request_invitation.php");
