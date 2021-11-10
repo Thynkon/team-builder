@@ -11,7 +11,16 @@ watcher so you can modify files and get them automatically compiled to css.
 
 Type the following at the project's root:
 ```shell
-make css
+composer build-css
+```
+
+Or, if you want to delete all the old css files, type:
+```sh
+composer clean-css
+```
+Finally, populate the database:
+```sh
+composer populate-db
 ```
 
 ### Database credentials
@@ -65,4 +74,11 @@ response's body, I store it in **$data["body"]**.
 <?= $data["body"]["content"] ?>
 </body>
 </html>
+```
+
+## Hacking on the project
+If you want to add features to this project, make sure that you add unit test
+and run them by typing the following:
+```sh
+composer test
 ```

@@ -3,5 +3,19 @@
         "phpunit/phpunit": "^9.5",
         "byjg/migration": "^4.2",
         "ext-pdo": "*"
+    },
+    "scripts": {
+        "build-css": [
+            "./scripts/compileScss.sh"
+        ],
+        "clean-css": [
+            "rm -r ./public/assets/css/*"
+        ],
+        "populate-db": [
+            "php ./scripts/populateDB.php"
+        ],
+        "test": [
+            "vendor/bin/phpunit --configuration=./phpunit.xml"
+        ]
     }
 }
