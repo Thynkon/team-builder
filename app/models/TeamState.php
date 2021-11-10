@@ -1,6 +1,6 @@
 <?php
 
-use Thynkon\SimpleOrm\Model;
+require_once("app/lib/Model.php");
 
 class TeamState extends Model
 {
