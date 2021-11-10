@@ -477,3 +477,4 @@ node_modules/
 
 .env.php
 .phpunit.result.cache
+public/assets/css/*
