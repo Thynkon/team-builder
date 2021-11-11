@@ -9,4 +9,5 @@
 
     <?= $data["body"]["addTeamForm"] ?? "" ?>
     <?= $data["body"]["requestForm"] ?? "" ?>
+    <?= $data["body"]["leaveButton"] ?? "" ?>
 </div>

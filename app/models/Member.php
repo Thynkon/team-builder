@@ -117,4 +117,16 @@ class Member extends Model
             return 0;
         }
     }
+
+    public function leaveTeam(int $id): bool
+    {
+        $query  = "DELETE FROM team_member ";
+        $query .= "WHERE member_id = :member_id AND team_id = :team_id;";
+
+        $connector = DB::getInstance();
+        return $connector->execute($query, [
+            "member_id" => $this->id,
+            "team_id" => $id,
+        ]);
+    }
 }

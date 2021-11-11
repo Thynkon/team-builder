@@ -231,4 +231,13 @@ class TeamTest extends TestCase
         $team = Team::find(12);
         $this->assertNotEquals(4, $team->numberOfMembers());
     }
+
+    public function testLeaveTeam()
+    {
+        $member = Member::find(6);
+        $team = Team::find(5);
+
+        $this->assertTrue($member->leaveTeam($team->id));
+        $this->assertFalse($member->leaveTeam($team->id));
+    }
 }

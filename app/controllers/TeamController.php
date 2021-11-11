@@ -51,7 +51,12 @@ class TeamController
                 require_once("resources/views/team/request_invitation.php");
                 $data["body"]["requestForm"] = ob_get_clean();
             }
+        }
 
+        if ($member->belongsToTeam($team->id)) {
+            ob_start();
+            require_once("resources/views/team/leave.php");
+            $data["body"]["leaveButton"] = ob_get_clean();
         }
 
         // get body content
@@ -227,5 +232,44 @@ class TeamController
         }
 
         header("Location: $url");
+    }
+
+    public function leaveTeam()
+    {
+        $team_id = $_REQUEST["team_id"];
+        $url = null;
+
+        if (!isset($team_id)) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Missing team id!";
+
+            header("Location: /index.php");
+            exit;
+        }
+
+        $member = Member::find(USER_ID);
+        $team = Team::find($team_id);
+
+        $url = "index.php?controller=TeamController&method=showDetails&team_id={$team->id}";
+        if (!$member->belongsToTeam($team->id)) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Cannot leave a team you do not belong to!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        if (!$member->leaveTeam($team->id)) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Something went wrong leaving team => {$team->name}!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "You have successfully leaved team => {$team->name}!";
+        header("Location: $url");
+        exit;
     }
 }
