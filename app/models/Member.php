@@ -129,4 +129,32 @@ class Member extends Model
             "team_id" => $id,
         ]);
     }
+
+    public function transferCaptainRole(int $new_captain_id, int $team_id): bool
+    {
+        $query1  = "UPDATE team_member  ";
+        $query1 .= "SET is_captain = 1 ";
+        $query1 .= "WHERE team_id = :team_id AND member_id = :new_captain_id;";
+
+        $query2  = "UPDATE team_member  ";
+        $query2 .= "SET is_captain = 0 ";
+        $query2 .= "WHERE team_id = :team_id AND member_id = :old_captain_id;";
+
+        $connector = DB::getInstance();
+        $connection = $connector->getConnection();
+
+        $connection->beginTransaction();
+        if (!$connector->execute($query1, [ "team_id" => $team_id, "new_captain_id" => $new_captain_id])) {
+            $connection->rollback();
+            return false;
+        }
+        if (!$connector->execute($query2, [ "team_id" => $team_id, "old_captain_id" => $this->id])) {
+            $connection->rollback();
+            return false;
+        }
+        $connection->commit();
+
+        return true;
+    }
+
 }

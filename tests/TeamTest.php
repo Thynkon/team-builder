@@ -240,4 +240,11 @@ class TeamTest extends TestCase
         $this->assertTrue($member->leaveTeam($team->id));
         $this->assertFalse($member->leaveTeam($team->id));
     }
+
+    public function testState()
+    {
+        $team = Team::find(1);
+        $this->assertEquals("WAIT_CHANG", $team->state()->slug);
+        $this->assertNotEquals("WAIT_VAL", $team->state()->slug);
+    }
 }

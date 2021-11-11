@@ -28,7 +28,7 @@ class Team extends Model
 
     public function captain()
     {
-        $query  = sprintf("SELECT `%s`.name ", Member::$table);
+        $query  = sprintf("SELECT %s.id, %s.name ", Member::$table, Member::$table);
         $query .= sprintf("FROM `team_member` ");
         $query .= sprintf("INNER JOIN %s ON %s.id = team_member.member_id ", Member::$table, Member::$table);
         $query .= sprintf("WHERE `team_member`.team_id = :id ");
@@ -138,5 +138,16 @@ class Team extends Model
         } else {
             return 0;
         }
+    }
+
+    public function state(): TeamState
+    {
+        $query  = sprintf("SELECT %s.* ", TeamState::$table);
+        $query .= sprintf("FROM %s ", static::$table);
+        $query .= sprintf("INNER JOIN %s ON %s.id = %s.state_id ", TeamState::$table, TeamState::$table, static::$table);
+        $query .= sprintf("WHERE %s.id = :id;", static::$table);
+
+        $connector = DB::getInstance();
+        return $connector->selectOne($query, ["id" => $this->id], TeamState::class);
     }
 }

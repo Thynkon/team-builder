@@ -42,6 +42,10 @@ class TeamController
             $data["body"]["team"] = $team;
             require_once("resources/views/team/add_members.php");
             $data["body"]["addTeamForm"] = ob_get_clean();
+
+            ob_start();
+            require_once("resources/views/team/potential_captains.php");
+            $data["body"]["potentialCaptains"] = ob_get_clean();
         }
 
         // only show request form if user is eligible
@@ -269,6 +273,48 @@ class TeamController
 
         $_SESSION["flash_message"]["type"] = FlashMessage::OK;
         $_SESSION["flash_message"]["value"] = "You have successfully leaved team => {$team->name}!";
+        header("Location: $url");
+        exit;
+    }
+
+    public function transferCaptainRole()
+    {
+        $team_id = $_REQUEST["team_id"];
+        $potential_captain_id = $_REQUEST["potential_captain"];
+        $url = null;
+
+        if (!isset($team_id)) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Missing team id!";
+
+            header("Location: /index.php");
+            exit;
+        }
+
+        if (!isset($potential_captain_id)) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Missing member id!";
+
+            header("Location: /index.php");
+            exit;
+        }
+
+        $member = Member::find(USER_ID);
+        $team = Team::find($team_id);
+        $current_captain = $team->captain();
+        $new_captain = Member::find($potential_captain_id);
+
+        $url = "index.php?controller=TeamController&method=showDetails&team_id={$team->id}";
+        if (!$current_captain->transferCaptainRole($new_captain->id, $team->id)) {
+            $_SESSION["flash_message"]["type"] = FlashMessage::ERROR;
+            $_SESSION["flash_message"]["value"] = "Something went wrong while transferring captainship to {$new_captain->name}!";
+
+            header("Location: $url");
+            exit;
+        }
+
+        $_SESSION["flash_message"]["type"] = FlashMessage::OK;
+        $_SESSION["flash_message"]["value"] = "{$new_captain->name} is now the new captain of team => {$team->name}!";
         header("Location: $url");
         exit;
     }

@@ -201,4 +201,14 @@ class MemberTest extends TestCase
         $member = Member::find(2);
         $this->assertNotEquals(5, $member->numberOfTeams());
     }
+
+    public function testTransfertCaptainRole()
+    {
+        $member1 = Member::find(5);
+        $member2 = Member::find(6);
+        $team = Team::find(5);
+
+        $this->assertTrue($member1->transferCaptainRole($member2->id, $team->id));
+        $this->assertFalse($member1->transferCaptainRole($member2->id, $team->id));
+    }
 }

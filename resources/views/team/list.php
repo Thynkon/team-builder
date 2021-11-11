@@ -10,4 +10,5 @@
     <?= $data["body"]["addTeamForm"] ?? "" ?>
     <?= $data["body"]["requestForm"] ?? "" ?>
     <?= $data["body"]["leaveButton"] ?? "" ?>
+    <?= $data["body"]["potentialCaptains"] ?? "" ?>
 </div>
