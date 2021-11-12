@@ -1,1 +1,2 @@
 TRUNCATE `roles`;
+TRUNCATE `status`;
