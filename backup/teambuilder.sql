@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.5.10-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19  Distrib 10.6.4-MariaDB, for Linux (x86_64)
 --
 -- Host: localhost    Database: teambuilder
 -- ------------------------------------------------------
--- Server version	10.5.10-MariaDB
+-- Server version	10.6.4-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,9 +27,11 @@ CREATE TABLE `members` (
   `name` varchar(45) NOT NULL,
   `password` varchar(500) NOT NULL,
   `role_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `fk_members_roles_idx` (`role_id`),
+  KEY `fk_members_status1_idx` (`status_id`),
   CONSTRAINT `fk_members_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -40,7 +42,7 @@ CREATE TABLE `members` (
 
 LOCK TABLES `members` WRITE;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES (1,'Anthony','Anthony\'s_Pa$$w0rd',1),(2,'Armand','Armand\'s_Pa$$w0rd',1),(3,'Cyril','Cyril\'s_Pa$$w0rd',1),(4,'Filipe','Filipe\'s_Pa$$w0rd',1),(5,'Helene','Helene\'s_Pa$$w0rd',1),(6,'Mario','Mario\'s_Pa$$w0rd',1),(7,'Mathieu','Mathieu\'s_Pa$$w0rd',1),(8,'Mauro','Mauro\'s_Pa$$w0rd',1),(9,'Melodie','Melodie\'s_Pa$$w0rd',1),(10,'Noah','Noah\'s_Pa$$w0rd',1),(11,'Robiel','Robiel\'s_Pa$$w0rd',1),(12,'Sou','Sou\'s_Pa$$w0rd',1),(13,'Theo','Theo\'s_Pa$$w0rd',1),(14,'Yannick','Yannick\'s_Pa$$w0rd',1),(15,'Xavier','Xavier\'s_Pa$$w0rd',2),(16,'Pascal','Pascal\'s_Pa$$w0rd',2),(17,'Nicolas','Nicolas\'s_Pa$$w0rd',2),(18,'Lèi','Lèi\'s_Pa$$w0rd',1),(19,'Marie-josée','Marie-josée\'s_Pa$$w0rd',1),(20,'Håkan','Håkan\'s_Pa$$w0rd',1),(21,'Cécile','Cécile\'s_Pa$$w0rd',1),(22,'Dà','Dà\'s_Pa$$w0rd',1),(23,'Néhémie','Néhémie\'s_Pa$$w0rd',1),(24,'Sòng','Sòng\'s_Pa$$w0rd',1),(25,'Audréanne','Audréanne\'s_Pa$$w0rd',1),(26,'Lucrèce','Lucrèce\'s_Pa$$w0rd',2),(27,'Göran','Göran\'s_Pa$$w0rd',1),(28,'Hélèna','Hélèna\'s_Pa$$w0rd',1),(29,'Åslög','Åslög\'s_Pa$$w0rd',1),(30,'Inès','Inès\'s_Pa$$w0rd',1),(31,'Agnès','Agnès\'s_Pa$$w0rd',1),(32,'Táng','Táng\'s_Pa$$w0rd',1),(33,'Yáo','Yáo\'s_Pa$$w0rd',1),(34,'Marlène','Marlène\'s_Pa$$w0rd',1),(35,'Eléa','Eléa\'s_Pa$$w0rd',1),(36,'Thérèse','Thérèse\'s_Pa$$w0rd',1),(37,'Pélagie','Pélagie\'s_Pa$$w0rd',1),(38,'Clélia','Clélia\'s_Pa$$w0rd',2),(39,'Anaé','Anaé\'s_Pa$$w0rd',1),(40,'Marie-noël','Marie-noël\'s_Pa$$w0rd',1),(41,'Andréanne','Andréanne\'s_Pa$$w0rd',1),(42,'Gérald','Gérald\'s_Pa$$w0rd',1),(43,'Bérénice','Bérénice\'s_Pa$$w0rd',1),(44,'Anaël','Anaël\'s_Pa$$w0rd',1),(45,'Mélissandre','Mélissandre\'s_Pa$$w0rd',1),(46,'Marie-hélène','Marie-hélène\'s_Pa$$w0rd',1),(47,'Desirée','Desirée\'s_Pa$$w0rd',1),(48,'Zhì','Zhì\'s_Pa$$w0rd',1),(49,'Lén','Lén\'s_Pa$$w0rd',1),(50,'Cinéma','Cinéma\'s_Pa$$w0rd',1),(51,'Marylène','Marylène\'s_Pa$$w0rd',1);
+INSERT INTO `members` VALUES (1,'Anthony','Anthony\'s_Pa$$w0rd',1,1),(2,'Armand','Armand\'s_Pa$$w0rd',1,1),(3,'Cyril','Cyril\'s_Pa$$w0rd',1,1),(4,'Filipe','Filipe\'s_Pa$$w0rd',1,1),(5,'Helene','Helene\'s_Pa$$w0rd',1,1),(6,'Mario','Mario\'s_Pa$$w0rd',1,1),(7,'Mathieu','Mathieu\'s_Pa$$w0rd',1,1),(8,'Mauro','Mauro\'s_Pa$$w0rd',1,1),(9,'Melodie','Melodie\'s_Pa$$w0rd',1,1),(10,'Noah','Noah\'s_Pa$$w0rd',1,1),(11,'Robiel','Robiel\'s_Pa$$w0rd',1,1),(12,'Sou','Sou\'s_Pa$$w0rd',1,1),(13,'Theo','Theo\'s_Pa$$w0rd',1,1),(14,'Yannick','Yannick\'s_Pa$$w0rd',1,1),(15,'Xavier','Xavier\'s_Pa$$w0rd',2,1),(16,'Pascal','Pascal\'s_Pa$$w0rd',2,1),(17,'Nicolas','Nicolas\'s_Pa$$w0rd',2,1),(18,'Lèi','Lèi\'s_Pa$$w0rd',1,1),(19,'Marie-josée','Marie-josée\'s_Pa$$w0rd',1,1),(20,'Håkan','Håkan\'s_Pa$$w0rd',1,1),(21,'Cécile','Cécile\'s_Pa$$w0rd',1,1),(22,'Dà','Dà\'s_Pa$$w0rd',1,1),(23,'Néhémie','Néhémie\'s_Pa$$w0rd',1,1),(24,'Sòng','Sòng\'s_Pa$$w0rd',1,1),(25,'Audréanne','Audréanne\'s_Pa$$w0rd',1,1),(26,'Lucrèce','Lucrèce\'s_Pa$$w0rd',2,1),(27,'Göran','Göran\'s_Pa$$w0rd',1,1),(28,'Hélèna','Hélèna\'s_Pa$$w0rd',1,1),(29,'Åslög','Åslög\'s_Pa$$w0rd',1,1),(30,'Inès','Inès\'s_Pa$$w0rd',1,1),(31,'Agnès','Agnès\'s_Pa$$w0rd',1,1),(32,'Táng','Táng\'s_Pa$$w0rd',1,1),(33,'Yáo','Yáo\'s_Pa$$w0rd',1,1),(34,'Marlène','Marlène\'s_Pa$$w0rd',1,1),(35,'Eléa','Eléa\'s_Pa$$w0rd',1,1),(36,'Thérèse','Thérèse\'s_Pa$$w0rd',1,1),(37,'Pélagie','Pélagie\'s_Pa$$w0rd',1,1),(38,'Clélia','Clélia\'s_Pa$$w0rd',2,1),(39,'Anaé','Anaé\'s_Pa$$w0rd',1,1),(40,'Marie-noël','Marie-noël\'s_Pa$$w0rd',1,1),(41,'Andréanne','Andréanne\'s_Pa$$w0rd',1,1),(42,'Gérald','Gérald\'s_Pa$$w0rd',1,1),(43,'Bérénice','Bérénice\'s_Pa$$w0rd',1,1),(44,'Anaël','Anaël\'s_Pa$$w0rd',1,1),(45,'Mélissandre','Mélissandre\'s_Pa$$w0rd',1,1),(46,'Marie-hélène','Marie-hélène\'s_Pa$$w0rd',1,1),(47,'Desirée','Desirée\'s_Pa$$w0rd',1,1),(48,'Zhì','Zhì\'s_Pa$$w0rd',1,1),(49,'Lén','Lén\'s_Pa$$w0rd',1,1),(50,'Cinéma','Cinéma\'s_Pa$$w0rd',1,1),(51,'Marylène','Marylène\'s_Pa$$w0rd',1,1);
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -54,7 +56,7 @@ DROP TABLE IF EXISTS `migration_version`;
 CREATE TABLE `migration_version` (
   `version` int(11) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,6 +121,31 @@ LOCK TABLES `states` WRITE;
 /*!40000 ALTER TABLE `states` DISABLE KEYS */;
 INSERT INTO `states` VALUES (1,'WAIT_CHANG','Attente de chagement'),(2,'WAIT_VAL','Attente de validation'),(3,'VALIDATED','Validé'),(4,'COMMITTED','Engagée'),(5,'RECRUTING','Recrutement');
 /*!40000 ALTER TABLE `states` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `status`
+--
+
+DROP TABLE IF EXISTS `status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `status` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `slug` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `status`
+--
+
+LOCK TABLES `status` WRITE;
+/*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO `status` VALUES (1,'ACT','Active'),(2,'INA','Inactive'),(3,'BAN','Banned');
+/*!40000 ALTER TABLE `status` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -190,4 +217,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-12 10:49:06
+-- Dump completed on 2021-11-12 12:06:33
