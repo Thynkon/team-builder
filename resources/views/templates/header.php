@@ -11,7 +11,7 @@ $message = FlashMessage::get();
 
     <div id="login_username_parent" class="pure-g">
         <div id="login_username" class="pure-u">
-            Authentifié en tant que: <?= $_SESSION["user"]["name"]?>
+            Authentifié en tant que: <a href="/index.php?controller=MemberController&method=showProfile&member_id=<?= USER_ID?>"><?= $_SESSION["user"]["name"]?></a>
         </div>
     </div>
 

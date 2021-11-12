@@ -86,4 +86,32 @@ class MemberController
         // finally, render page
         $view->render("templates/base.php", $data);
     }
+
+    public function showProfile()
+    {
+        $user_id = $_REQUEST["member_id"];
+        $member = Member::find($user_id);
+
+        $view = new View();
+
+        $data = [];
+        $data["body"]["member"] = $member;
+
+        // set title
+        $data["head"]["title"] = "Team-builder";
+
+        // get css stylesheets
+        ob_start();
+        require_once("resources/views/member/style.php");
+        $data["head"]["css"] = ob_get_clean();
+
+        // get body content
+        ob_start();
+        require_once("resources/views/templates/header.php");
+        require_once("resources/views/member/profile.php");
+        $data["body"]["content"] = ob_get_clean();
+
+        // finally, render page
+        $view->render("templates/base.php", $data);
+    }
 }

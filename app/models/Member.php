@@ -4,6 +4,7 @@ require_once("app/lib/database/DB.php");
 require_once("app/lib/Model.php");
 require_once("app/models/Team.php");
 require_once("app/models/Role.php");
+require_once("app/models/Status.php");
 
 class Member extends Model
 {
@@ -155,6 +156,28 @@ class Member extends Model
         $connection->commit();
 
         return true;
+    }
+
+    public function status(): Status
+    {
+        $query  = "SELECT `status`.* ";
+        $query .= "FROM members ";
+        $query .= "INNER JOIN `status` ON `status`.id = members.status_id ";
+        $query .= "WHERE members.id = :id;";
+
+        $connector = DB::getInstance();
+        return $connector->selectOne($query, ["id" => $this->id], Status::class);
+    }
+
+    public function role(): Role
+    {
+        $query  = "SELECT `roles`.* ";
+        $query .= "FROM members ";
+        $query .= "INNER JOIN `roles` ON `roles`.id = members.role_id ";
+        $query .= "WHERE members.id = :id;";
+
+        $connector = DB::getInstance();
+        return $connector->selectOne($query, ["id" => $this->id], Role::class);
     }
 
 }
