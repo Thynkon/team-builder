@@ -77,31 +77,29 @@ response's body, I store it in **$data["body"]**.
 ```
 
 ### Member status
+Load database by typing: 
+```sh
+mysql -u USER -p teambuilder < ./backup/teambuilder.sql
+```
 ```sql
-ALTER TABLE `teambuilder`.`members` 
-ADD COLUMN `status_id` INT(11) NOT NULL AFTER `role_id`,
-ADD INDEX `fk_members_status1_idx` (`status_id` ASC) VISIBLE;
-
 CREATE TABLE IF NOT EXISTS `teambuilder`.`status` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `slug` VARCHAR(10) NOT NULL,
-  `value` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb3;
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `slug` VARCHAR(10) NOT NULL,
+    `value` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`id`));
 
-ALTER TABLE `teambuilder`.`members` 
-ADD CONSTRAINT `fk_members_status1`
-  FOREIGN KEY (`status_id`)
-  REFERENCES `teambuilder`.`status` (`id`)
-  ON DELETE NO ACTION
-  ON UPDATE NO ACTION;
+ALTER TABLE `teambuilder`.`members`
+    ADD COLUMN `status_id` INT(11) NOT NULL AFTER `role_id`,
+ADD INDEX `fk_members_status1_idx` (`status_id` ASC) VISIBLE;
 
 INSERT INTO `teambuilder`.`status` (`slug`, `value`) VALUES ('ACT', 'Active');
 INSERT INTO `teambuilder`.`status` (`slug`, `value`) VALUES ('INA', 'Inactive');
 INSERT INTO `teambuilder`.`status` (`slug`, `value`) VALUES ('BAN', 'Banned');
 
+
+SET SQL_SAFE_UPDATES = 0;
 UPDATE `teambuilder`.`members` SET status_id = 1;
+SET SQL_SAFE_UPDATES = 1;
 
 ```
 
