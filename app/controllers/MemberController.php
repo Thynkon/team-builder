@@ -9,11 +9,13 @@ class MemberController
     public function teamsList()
     {
         $member_list = Member::orderBy("name");
+        $member = Member::find(USER_ID);
 
         $view = new View();
 
         $data = [];
         $data["body"]["members"] = $member_list;
+        $data["body"]["member"] = $member;
 
         // set title
         $data["head"]["title"] = "Team-builder";

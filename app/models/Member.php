@@ -72,6 +72,22 @@ class Member extends Model
         return $result === null ? false : true;
     }
 
+    public function isModerator(): bool
+    {
+        $query  = "SELECT TRUE ";
+        $query .= "FROM `members` ";
+        $query .= "INNER JOIN `roles` ON `roles`.id = `members`.role_id ";
+        $query .= "WHERE `roles`.slug = 'MOD' AND `members`.id = :id;";
+
+        $result = null;
+        $connector = DB::getInstance();
+
+        $result = $connector->selectOne($query, ["id" => $this->id]);
+
+        // is result is empty, is means that the database returned nothing
+        return $result === null ? false : true;
+    }
+
     public function belongsToTeam(int $id): bool
     {
         $query  = "SELECT true ";

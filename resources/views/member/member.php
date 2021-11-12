@@ -3,7 +3,11 @@
         <?php foreach ($data["body"]["members"] as $member): ?>
             <tr>
                 <td>
-                    <?= $member->name ?>
+                    <?php if ($data["body"]["member"]->isModerator()): ?>
+                        <a href="/index.php?controller=MemberController&method=showProfile&member_id=<?= $member->id?>"><?= $member->name ?></a>
+                    <?php else: ?>
+                        <?= $member->name ?>
+                    <?php endif ?>
                 </td>
                 <td>
                     <?php foreach ($member->teams() as $team): ?>
