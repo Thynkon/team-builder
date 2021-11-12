@@ -8,5 +8,5 @@ class Status extends Model
     protected string $primaryKey = "id";
     public int $id;
     public string $slug;
-    public string $name;
+    public string $value;
 }

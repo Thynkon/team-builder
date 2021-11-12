@@ -12,3 +12,6 @@
 <?php else: ?>
 <p>Inscrit dans aucune équipe</p>
 <?php endif ?>
+
+
+<a href="/index.php?controller=MemberController&method=showEditProfile&member_id=<?= $data["body"]["member"]->id?>">Edit profile</a>
