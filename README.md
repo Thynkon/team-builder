@@ -4,6 +4,7 @@
 Install project's dependencies using composer:
 ```shell
 composer install
+npm install -g sass
 ```
 
 And compile scss files thanks to a script I wrote. It will compile all scss files and launch a file
@@ -18,6 +19,9 @@ Or, if you want to delete all the old css files, type:
 ```sh
 composer clean-css
 ```
+
+**IMPORTANT - The command above will only work on UNIX-like operating systems since it executes a bash script.**
+
 Finally, populate the database:
 ```sh
 composer populate-db
@@ -77,10 +81,23 @@ response's body, I store it in **$data["body"]**.
 ```
 
 ### Member status
+First of all, create the database
+```sql
+CREATE DATABASE teambuilder;
+```
+
 Load database by typing: 
 ```sh
-mysql -u USER -p teambuilder < ./backup/teambuilder.sql
+mysql -u <USER> -p teambuilder < ./backup/teambuilder.sql
 ```
+
+**IMPORTANT - As you can see above, I used to call 'composer populate-db' to populate the database. But, during the examn I had many SQL errors
+so I decided to manually load the database.
+Also, since unit tests are not required for the exam, it was not so important to fix the migrations problems.**
+
+
+There are the modifications that were made to the database in order to
+implement the first user story.
 ```sql
 CREATE TABLE IF NOT EXISTS `teambuilder`.`status` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
