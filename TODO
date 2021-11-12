@@ -1,0 +1,3 @@
+Improve user experience by centering elements (css)
+Add php unit tests (I dit not created any test due to database migrations
+problems)
